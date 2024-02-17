@@ -9,8 +9,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<AssemblyName>MyCoolMod</AssemblyName>
-		<RootNamespace>MyCoolMod</RootNamespace>
+		<AssemblyName>CS2 Mod Testing</AssemblyName>
+		<RootNamespace>CS2 Mod Testing</RootNamespace>
 		<Description>A mod that I made for Cities: Skylines 2</Description>
 		<Version>0.1.0</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
