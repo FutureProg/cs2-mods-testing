@@ -23,7 +23,7 @@ This repository template allows you to get started with Cities: Skylines 2 moddi
 
 - Create a new repository based on this one
 - Clone your new repository to your computer
-- Uncomment and update the `Cities2_Location` variable in `CS2 Mod Testing.csproj`
+- Uncomment and update the `Cities2_Location` variable in `CS2ModsTesting.csproj`
 - Run `make build`
 
 After running the last command, the mod should be automatically copied to your game directory,
@@ -31,15 +31,15 @@ so launching the game should include running the mod you just started :)
 
 # Renaming your project
 
-You can leverage the helper script in `scripts/rename.csx` in order to replace "CS2 Mod Testing" with whatever you want to name your project. Usage:
+You can leverage the helper script in `scripts/rename.csx` in order to replace "CS2ModsTesting" with whatever you want to name your project. Usage:
 
 ```
-$ dotnet script scripts\rename.csx "CS2 Mod Testing" "AnotherModIMade"
+$ dotnet script scripts\rename.csx "CS2ModsTesting" "AnotherModIMade"
 ```
 
 # Set license details
 
-You'll need to update `LICENSE` with the correct details for `<Year>` and `<Author>`, and change "CS2 Mod Testing" to your mod name if you haven't already.
+You'll need to update `LICENSE` with the correct details for `<Year>` and `<Author>`, and change "CS2ModsTesting" to your mod name if you haven't already.
 
 # Incrementing version number
 

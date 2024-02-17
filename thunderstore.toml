@@ -3,7 +3,7 @@ schemaVersion = "0.0.1"
 
 [package]
 namespace = "CaptainOfCoit"
-name = "CS2 Mod Testing"
+name = "CS2ModsTesting"
 versionNumber = "0.1.0"
 description = "Example mod description"
 websiteUrl = "https://thunderstore.io"

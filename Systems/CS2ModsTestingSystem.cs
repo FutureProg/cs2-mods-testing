@@ -7,9 +7,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Scripting;
 
-namespace CS2 Mod Testing.Systems
+namespace CS2ModsTesting.Systems
 {
-    public class CS2 Mod TestingSystem : GameSystemBase
+    public class CS2ModsTestingSystem : GameSystemBase
     {
         // private SimulationSystem simulation;
 

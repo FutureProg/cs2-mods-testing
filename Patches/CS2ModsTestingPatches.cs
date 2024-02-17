@@ -7,9 +7,9 @@ using Game.UI.Menu;
 using HarmonyLib;
 using System.Reflection.Emit;
 using Game;
-using CS2 Mod Testing.Systems;
+using CS2ModsTesting.Systems;
 
-namespace CS2 Mod Testing.Patches {
+namespace CS2ModsTesting.Patches {
 
     // This example patch adds the loading of a custom ECS System after the AudioManager has
     // its "OnGameLoadingComplete" method called. We're just using it as a entrypoint, and
@@ -23,7 +23,7 @@ namespace CS2 Mod Testing.Patches {
                 return;
 
             // Here we add our custom ECS System to the game's ECS World, so it's "online" at runtime
-            __instance.World.GetOrCreateSystem<CS2 Mod TestingSystem>();
+            __instance.World.GetOrCreateSystem<CS2ModsTestingSystem>();
         }
     }
 
