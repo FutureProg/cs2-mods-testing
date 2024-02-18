@@ -1,14 +1,18 @@
 ﻿all: build
-BEPINEX_VERSION = 6
+BEPINEX_VERSION = 5
 
 clean:
-	@dotnet clean
+	@dotnet clean CS2ModsTesting.csproj
 
 restore:
-	@dotnet restore
+	@dotnet restore CS2ModsTesting.csproj
 
 build: clean restore
-	@dotnet build /p:BepInExVersion=$(BEPINEX_VERSION)
+	@dotnet build CS2ModsTesting.csproj /p:BepInExVersion=$(BEPINEX_VERSION)
+	
+
+run: 
+	E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2.exe -developerMode
 
 package-win:
 	@-mkdir dist

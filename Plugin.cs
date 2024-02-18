@@ -8,6 +8,8 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Game.Common;
+using Game;
 
 #if BEPINEX_V6
     using BepInEx.Unity.Mono;
@@ -16,11 +18,20 @@ using UnityEngine;
 namespace CS2ModsTesting
 {
     [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+    [HarmonyPatch]
     public class Plugin : BaseUnityPlugin
     {
+
+        private Mod mMod;
+
         private void Awake()
-        {
+        {            
             Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
+            
+            mMod = new();
+            mMod.OnLoad();
+            mMod.Log.Info("Plugin.Awake");
+            
 
             var harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), MyPluginInfo.PLUGIN_GUID + "_Cities2Harmony");
             var patchedMethods = harmony.GetPatchedMethods().ToArray();
@@ -31,6 +42,14 @@ namespace CS2ModsTesting
                 Logger.LogInfo($"Patched method: {patchedMethod.Module.Name}:{patchedMethod.Name}");
             }
         }
+
+        /// <summary>
+        /// Harmony postfix to <see cref="SystemOrder.Initialize"/> to substitute for IMod.OnCreateWorld.
+        /// </summary>
+        /// <param name="updateSystem"><see cref="GameManager"/> <see cref="UpdateSystem"/> instance.</param>
+        [HarmonyPatch(typeof(SystemOrder), nameof(SystemOrder.Initialize))]
+        [HarmonyPostfix]
+        private static void InjectSystems(UpdateSystem updateSystem) => Mod.Instance.OnCreateWorld(updateSystem);
 
         // Keep in mind, Unity UI is immediate mode, so OnGUI is called multiple times per frame
         // https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnGUI.html

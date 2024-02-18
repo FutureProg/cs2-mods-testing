@@ -14,7 +14,7 @@ namespace CS2ModsTesting.Patches {
     // This example patch adds the loading of a custom ECS System after the AudioManager has
     // its "OnGameLoadingComplete" method called. We're just using it as a entrypoint, and
     // it won't affect anything related to audio.
-    [HarmonyPatch(typeof(AudioManager), "OnGameLoadingComplete")]
+    // [HarmonyPatch(typeof(AudioManager), "OnGameLoadingComplete")]
     class AudioManager_OnGameLoadingComplete
     {
         static void Postfix(AudioManager __instance, Colossal.Serialization.Entities.Purpose purpose, GameMode mode)
@@ -28,7 +28,7 @@ namespace CS2ModsTesting.Patches {
     }
 
     // This example patch enables the editor in the main menu
-    [HarmonyPatch(typeof(MenuUISystem), "IsEditorEnabled")]
+    // [HarmonyPatch(typeof(MenuUISystem), "IsEditorEnabled")]
     class MenuUISystem_IsEditorEnabledPatch
     {
         static bool Prefix(ref bool __result)
