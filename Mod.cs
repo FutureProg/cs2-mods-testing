@@ -29,7 +29,7 @@ namespace CS2ModsTesting
         {
             Log.Info("Starting On Create World");
 
-            updateSystem.UpdateAt<VehicleSnowMeltSystem>(SystemUpdatePhase.GameSimulation);
+            // updateSystem.UpdateAt<VehicleSnowMeltSystem>(SystemUpdatePhase.GameSimulation);
 
         }
 

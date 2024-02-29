@@ -54,6 +54,7 @@ namespace CS2ModsTesting.Systems {
             // mModificationEndBarrier = this.World.GetOrCreateSystemManaged<ModificationEndBarrier>();
 
             Log = Mod.Instance.Log;
+            mWetnessSystem.Enabled = false;
         }
 
         protected override void OnGameLoaded(Context serializationContext)
@@ -74,6 +75,8 @@ namespace CS2ModsTesting.Systems {
                     // mSubObjectEventArchetype = mSubObjectEventArchetype
                 };                
                 this.Dependency = job.ScheduleParallel(mQuery, this.Dependency);
+                this.Dependency.Complete();
+
             }            
         }
 

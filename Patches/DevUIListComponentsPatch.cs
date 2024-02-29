@@ -1,4 +1,5 @@
 using System;
+using Game.Common;
 using Game.Objects;
 using Game.UI.InGame;
 using Game.Vehicles;
@@ -42,12 +43,14 @@ namespace CS2ModsTesting {
 
             updateInfoMethod = (Entity entity, Entity prefab, InfoList info) => {
                 var surface = em.GetComponentData<Surface>(entity);
+                var flag = em.HasComponent<SubObject>(entity) && !em.HasComponent<Owner>(entity);
                 info.label = "Surface Data";
                 info.Add(new InfoList.Item($"SnowAmount: {surface.m_SnowAmount}"));
                 info.Add(new InfoList.Item($"Snow Accum: {surface.m_AccumulatedSnow}"));
                 info.Add(new InfoList.Item($"Dirtyness: {surface.m_Dirtyness}"));
                 info.Add(new InfoList.Item($"Wetness: {surface.m_Wetness}"));
-                info.Add(new InfoList.Item($"Wetness Accum: {surface.m_AccumulatedWetness}"));                                
+                info.Add(new InfoList.Item($"Wetness Accum: {surface.m_AccumulatedWetness}"));     
+                info.Add(new InfoList.Item($"Flag: {flag}"));
             };
             ___m_InfoUISystem.AddDeveloperInfo(new InfoList(
                 (entity, prefab) => em.HasComponent<Vehicle>(entity) && em.HasComponent<Surface>(entity),
