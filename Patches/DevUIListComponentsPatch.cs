@@ -1,6 +1,7 @@
 using System;
 using Game.Common;
 using Game.Objects;
+using Game.Rendering;
 using Game.UI.InGame;
 using Game.Vehicles;
 using HarmonyLib;
@@ -54,6 +55,20 @@ namespace CS2ModsTesting {
             };
             ___m_InfoUISystem.AddDeveloperInfo(new InfoList(
                 (entity, prefab) => em.HasComponent<Vehicle>(entity) && em.HasComponent<Surface>(entity),
+                updateInfoMethod
+            ));
+
+            updateInfoMethod = (Entity entity, Entity prefab, InfoList info) => {
+                var streetLight = em.GetComponentData<StreetLight>(entity);                
+                var streetLightStates = em.GetBuffer<LightState>(entity, true);
+                info.label = "Street Light Info";
+                info.Add(new InfoList.Item($"Street light State: {streetLight.m_State.ToString()}"));                
+                foreach(LightState state in streetLightStates) {
+                    info.Add(new InfoList.Item($"Intensity: {state.m_Intensity}, Colour: {state.m_Color}"));
+                }
+            };
+            ___m_InfoUISystem.AddDeveloperInfo(new InfoList(
+                (entity, prefab) => em.HasComponent<StreetLight>(entity) && em.HasBuffer<LightState>(entity),
                 updateInfoMethod
             ));
         }

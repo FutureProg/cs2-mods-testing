@@ -22,7 +22,9 @@ namespace CS2ModsTesting.Systems {
         
         ComponentTypeHandle<Moving> mMovingTypeHandle;
         ComponentTypeHandle<Surface> mSurfaceTypeHandle;
-
+        EntityTypeHandle mEntityTypeHandle;
+        
+        EndFrameBarrier mEndFrameBarrier;
         WetnessSystem mWetnessSystem;
         // ComponentTypeHandle<Owner> mOwnerTypeHandle;
         // ComponentTypeHandle<
@@ -45,7 +47,9 @@ namespace CS2ModsTesting.Systems {
 
             mSurfaceTypeHandle = this.GetComponentTypeHandle<Surface>(false);
             mMovingTypeHandle = this.GetComponentTypeHandle<Moving>(true);
+            mEntityTypeHandle = this.GetEntityTypeHandle();
             mWetnessSystem = this.World.GetOrCreateSystemManaged<WetnessSystem>();
+            mEndFrameBarrier = World.GetOrCreateSystemManaged<EndFrameBarrier>();
             // mSubObjectEventArchetype = this.EntityManager.CreateArchetype( new ComponentType[] {
             //     ComponentType.ReadWrite<Event>(),
             //     ComponentType.ReadWrite<SubObjectsUpdated>()
@@ -67,36 +71,42 @@ namespace CS2ModsTesting.Systems {
         {
             if (run) {
                 mSurfaceTypeHandle.Update(this);
-                mMovingTypeHandle.Update(this);                
+                mMovingTypeHandle.Update(this);     
+                this.mEntityTypeHandle.Update(this);           
                 // var ecb = mModificationEndBarrier.CreateCommandBuffer().AsParallelWriter();                
                 MeltSnowJob job = new() {
                     mMovingHandle = mMovingTypeHandle,
-                    mSurfaceHandle = mSurfaceTypeHandle
+                    mSurfaceHandle = mSurfaceTypeHandle,
+                    mEntityTypeHandle = mEntityTypeHandle,
+                    ecb = mEndFrameBarrier.CreateCommandBuffer().AsParallelWriter()
                     // mSubObjectEventArchetype = mSubObjectEventArchetype
                 };                
-                this.Dependency = job.ScheduleParallel(mQuery, this.Dependency);
-                this.Dependency.Complete();
-
+                this.Dependency = job.ScheduleParallel(mQuery, this.Dependency);                
+                mEndFrameBarrier.AddJobHandleForProducer(this.Dependency);
             }            
         }
 
         [BurstCompile]
         private struct MeltSnowJob : IJobChunk {
 
+            public EntityTypeHandle mEntityTypeHandle;
             public ComponentTypeHandle<Moving> mMovingHandle;
             public ComponentTypeHandle<Surface> mSurfaceHandle;
             // public EntityArchetype mSubObjectEventArchetype;
+            public EntityCommandBuffer.ParallelWriter ecb;
             
             public void Execute(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask, in v128 chunkEnabledMask)
             {
                 var moving = chunk.GetNativeArray(ref mMovingHandle);
                 var surface = chunk.GetNativeArray(ref mSurfaceHandle);
+                var entities = chunk.GetNativeArray(mEntityTypeHandle);
                 for(int i = 0; i < chunk.Count; i++) {
                     if (math.length(moving[i].m_Velocity) >= 1.0f && (surface[i].m_AccumulatedSnow > 0 || surface[i].m_SnowAmount > 0)) {
                         ref Surface s =  ref surface.ElementAt(i);                                    
                         s.m_AccumulatedSnow = (byte) 0;
                         s.m_SnowAmount = (byte) 0;     
                         //use the EndFrameBuffer to add EffectsUpdated to the entity. See StreetLightSystem line 263 for an example
+                        ecb.AddComponent<EffectsUpdated>(unfilteredChunkIndex, entities[i]);
                     }
                 }
             }
