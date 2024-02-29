@@ -95,7 +95,8 @@ namespace CS2ModsTesting.Systems {
                     if (math.length(moving[i].m_Velocity) >= 1.0f && (surface[i].m_AccumulatedSnow > 0 || surface[i].m_SnowAmount > 0)) {
                         ref Surface s =  ref surface.ElementAt(i);                                    
                         s.m_AccumulatedSnow = (byte) 0;
-                        s.m_SnowAmount = (byte) 0;                        
+                        s.m_SnowAmount = (byte) 0;     
+                        //use the EndFrameBuffer to add EffectsUpdated to the entity. See StreetLightSystem line 263 for an example
                     }
                 }
             }
